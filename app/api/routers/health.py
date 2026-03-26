@@ -13,6 +13,7 @@ _SERVICES = {
     "ai_agent": settings.AI_AGENT_URL,
     "behavioral_monitoring": settings.BEHAVIORAL_MONITORING_URL,
     "identity_provider": settings.IDENTITY_PROVIDER_URL,
+    "active_learning": settings.ACTIVE_LEARNING_URL,
 }
 
 

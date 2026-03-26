@@ -15,6 +15,7 @@ class Settings(BaseSettings):
     AI_AGENT_URL: str = "http://ai-agent:8003"
     BEHAVIORAL_MONITORING_URL: str = "http://behavioral-monitoring:8004"
     IDENTITY_PROVIDER_URL: str = "http://identity-provider:8005"
+    ACTIVE_LEARNING_URL: str = "http://active-learning:8006"
 
     # Request timeout for proxied calls (seconds).
     PROXY_TIMEOUT: float = 60.0
@@ -59,6 +60,11 @@ SERVICE_ROUTES: list[tuple[str, str]] = [
 
     # HDT-AI-Agent
     ("/models/chatbot", settings.AI_AGENT_URL),
+
+    # HDT-Active-Learning
+    ("/models/annotation", settings.ACTIVE_LEARNING_URL),
+    ("/mods/annotation", settings.ACTIVE_LEARNING_URL),
+    ("/feedback", settings.ACTIVE_LEARNING_URL),
 
     # HDT-Behavioral-Monitoring
     ("/users", settings.BEHAVIORAL_MONITORING_URL),
