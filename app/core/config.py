@@ -77,9 +77,17 @@ SERVICE_ROUTES: list[tuple[str, str]] = [
 PUBLIC_PATHS: list[str] = [
     "/health",
     "/health/services",
+    # Allow local FE upload + polling without requiring the identity provider.
+    # The downstream Image Processing service still enforces its own Bearer-token allowlist.
+    "/api/upload",
+    "/api/conversion",
+    "/dzi",
     "/auth/register",
     "/auth/login",
     "/auth/refresh",
     "/docs",
     "/openapi.json",
+    # Allow `hipa-converter` pooling worker to call conversion endpoints using Basic Auth
+    # (it does not have a Bearer token / Identity Provider).
+    "/conversion",
 ]
