@@ -7,6 +7,7 @@ from app.api.routers.gateway import router as gateway_router
 from app.api.routers.health import router as health_router
 from app.core.config import settings
 from app.core.proxy import close_client
+from app.middleware.auth import AuthMiddleware
 
 app = FastAPI(title="HDT API Gateway")
 
@@ -17,6 +18,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Auth middleware validates Bearer tokens via the Identity Provider
+# before the request reaches the proxy router.
+app.add_middleware(AuthMiddleware)
 
 # Health endpoints are registered first (exact routes take priority).
 app.include_router(health_router)

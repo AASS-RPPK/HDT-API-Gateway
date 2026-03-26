@@ -4,12 +4,6 @@ from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class ServiceEndpoint(BaseSettings):
-    """Base URL for an upstream microservice."""
-
-    url: str
-
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -20,6 +14,7 @@ class Settings(BaseSettings):
     AI_PREDICTION_URL: str = "http://ai-prediction:8002"
     AI_AGENT_URL: str = "http://ai-agent:8003"
     BEHAVIORAL_MONITORING_URL: str = "http://behavioral-monitoring:8004"
+    IDENTITY_PROVIDER_URL: str = "http://identity-provider:8005"
 
     # Request timeout for proxied calls (seconds).
     PROXY_TIMEOUT: float = 60.0
@@ -50,6 +45,9 @@ settings = Settings()
 # each microservice receives the routes it expects.
 # ---------------------------------------------------------------------------
 SERVICE_ROUTES: list[tuple[str, str]] = [
+    # HDT-Identity-Provider (public auth endpoints)
+    ("/auth", settings.IDENTITY_PROVIDER_URL),
+
     # HDT-Image-Processing
     ("/api/upload", settings.IMAGE_PROCESSING_URL),
     ("/api/conversion", settings.IMAGE_PROCESSING_URL),
@@ -64,4 +62,18 @@ SERVICE_ROUTES: list[tuple[str, str]] = [
 
     # HDT-Behavioral-Monitoring
     ("/users", settings.BEHAVIORAL_MONITORING_URL),
+]
+
+# ---------------------------------------------------------------------------
+# Paths that do NOT require a valid Bearer token.
+# Auth endpoints must be public so users can register / login.
+# ---------------------------------------------------------------------------
+PUBLIC_PATHS: list[str] = [
+    "/health",
+    "/health/services",
+    "/auth/register",
+    "/auth/login",
+    "/auth/refresh",
+    "/docs",
+    "/openapi.json",
 ]
