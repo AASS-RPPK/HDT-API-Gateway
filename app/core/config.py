@@ -55,7 +55,14 @@ SERVICE_ROUTES: list[tuple[str, str]] = [
     ("/conversion", settings.IMAGE_PROCESSING_URL),
     ("/dzi", settings.IMAGE_PROCESSING_URL),
 
-    # HDT-AI-Prediction
+    # HDT-Active-Learning — more specific annotation sub-paths must come before
+    # the generic /models/annotation prefix so they are matched first.
+    ("/feedback", settings.ACTIVE_LEARNING_URL),
+    ("/models/annotation/train", settings.ACTIVE_LEARNING_URL),
+    ("/models/annotation/deploy", settings.ACTIVE_LEARNING_URL),
+
+    # HDT-AI-Prediction (annotation prediction + legacy path)
+    ("/models/annotation", settings.AI_PREDICTION_URL),
     ("/model/annotations", settings.AI_PREDICTION_URL),
 
     # HDT-AI-Agent
